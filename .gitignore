@@ -1,0 +1,31 @@
+# ── Dependencies ──────────────────────────────
+node_modules/
+shopping_site/node_modules/
+
+# ── Local SQLite database (production data lives on the server) ──
+*.db
+*.db-shm
+*.db-wal
+shopping_site/novamart.db*
+
+# ── User-uploaded images (keep production uploads on server only) ──
+shopping_site/images/uploads/
+
+# ── Secrets / env ─────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+
+# ── Build / cache artefacts ───────────────────
+dist/
+build/
+.cache/
+
+# ── OS / editor cruft ─────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+npm-debug.log*
