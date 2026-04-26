@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaMart — Admin Panel</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="admin-body">
+
+<!-- ===== ADMIN HEADER ===== -->
+<header class="admin-header">
+    <div class="admin-header-inner">
+        <a href="index.html" class="logo">Nova<span>Mart</span></a>
+        <span class="admin-badge">Admin Panel</span>
+        <div class="admin-header-right">
+            <span id="adminUserName" class="nav-user-name"></span>
+            <a href="index.html" class="admin-back-link">← Store</a>
+            <button class="nav-logout-btn" id="adminLogoutBtn">Sign Out</button>
+        </div>
+    </div>
+</header>
+
+<!-- ===== ADMIN LAYOUT ===== -->
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <nav class="admin-nav">
+            <button class="admin-nav-btn active" data-tab="products">Products</button>
+            <button class="admin-nav-btn" data-tab="categories">Categories</button>
+            <button class="admin-nav-btn" data-tab="orders">Orders</button>
+            <button class="admin-nav-btn" data-tab="password">Change Password</button>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+
+        <!-- ===== PRODUCTS TAB ===== -->
+        <section class="admin-tab active" id="tab-products">
+            <div class="admin-tab-header">
+                <h2>Manage Products</h2>
+                <button class="btn-primary" id="btnNewProduct">+ Add Product</button>
+            </div>
+
+            <div class="admin-form-card" id="productFormCard" style="display:none">
+                <h3 id="productFormTitle">Add New Product</h3>
+                <form id="productForm" enctype="multipart/form-data" novalidate>
+                    <input type="hidden" id="productId" />
+                    <input type="hidden" name="_csrf" id="productCsrf" />
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productCatid">Category *</label>
+                            <select id="productCatid" name="catid" required>
+                                <option value="">Select category…</option>
+                            </select>
+                            <span class="form-error" id="errCatid"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" name="name" maxlength="120" required />
+                            <span class="form-error" id="errName"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrice">Price (USD) *</label>
+                            <input type="number" id="productPrice" name="price" min="0" step="0.01" required />
+                            <span class="form-error" id="errPrice"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="productImage">Product Image <small>(jpg/png/gif/webp, max 10 MB)</small></label>
+                            <input type="file" id="productImage" name="image" accept="image/jpeg,image/png,image/gif,image/webp" />
+                            <span class="form-error" id="errImage"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDesc">Description</label>
+                        <textarea id="productDesc" name="description" rows="4" maxlength="2000"></textarea>
+                    </div>
+
+                    <div id="imagePreviewWrap" style="display:none">
+                        <label>Current Image</label>
+                        <img id="imagePreview" src="" alt="preview" class="admin-img-preview" />
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="productSubmitBtn">Save Product</button>
+                        <button type="button" class="btn-secondary" id="productCancelBtn">Cancel</button>
+                    </div>
+                    <p class="form-msg" id="productMsg"></p>
+                </form>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="productTable">
+                    <thead><tr><th>ID</th><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Actions</th></tr></thead>
+                    <tbody id="productTableBody"><tr><td colspan="6" class="table-loading">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== CATEGORIES TAB ===== -->
+        <section class="admin-tab" id="tab-categories">
+            <div class="admin-tab-header">
+                <h2>Manage Categories</h2>
+                <button class="btn-primary" id="btnNewCategory">+ Add Category</button>
+            </div>
+
+            <div class="admin-form-card" id="categoryFormCard" style="display:none">
+                <h3 id="categoryFormTitle">Add New Category</h3>
+                <form id="categoryForm" novalidate>
+                    <input type="hidden" id="categoryId" />
+                    <input type="hidden" name="_csrf" id="categoryCsrf" />
+                    <div class="form-group">
+                        <label for="categoryName">Category Name *</label>
+                        <input type="text" id="categoryName" name="name" maxlength="60" required />
+                        <span class="form-error" id="errCategoryName"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Category</button>
+                        <button type="button" class="btn-secondary" id="categoryCancelBtn">Cancel</button>
+                    </div>
+                    <p class="form-msg" id="categoryMsg"></p>
+                </form>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="categoryTable">
+                    <thead><tr><th>ID</th><th>Name</th><th>Products</th><th>Actions</th></tr></thead>
+                    <tbody id="categoryTableBody"><tr><td colspan="4" class="table-loading">Loading…</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== ORDERS TAB (Phase 5) ===== -->
+        <section class="admin-tab" id="tab-orders">
+            <div class="admin-tab-header">
+                <h2>Orders</h2>
+                <button class="btn-secondary" id="btnRefreshOrders" type="button">Refresh</button>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table" id="ordersTable">
+                    <thead><tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Txn ID</th>
+                        <th>Created</th>
+                    </tr></thead>
+                    <tbody id="ordersTableBody">
+                        <tr><td colspan="8" class="table-loading">Loading…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== CHANGE PASSWORD TAB ===== -->
+        <section class="admin-tab" id="tab-password">
+            <div class="admin-tab-header"><h2>Change Password</h2></div>
+            <div class="admin-form-card" style="display:block; max-width:480px">
+                <div class="auth-error" id="pwError" style="display:none"></div>
+                <div class="auth-success" id="pwSuccess" style="display:none"></div>
+                <form id="changePasswordForm" novalidate>
+                    <input type="hidden" name="_csrf" id="pwCsrf" />
+                    <div class="form-group">
+                        <label for="curPassword">Current Password *</label>
+                        <input type="password" id="curPassword" name="current_password" maxlength="128" autocomplete="current-password" required />
+                        <span class="form-error" id="errCurPw"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password * <small>(min 8, 1 uppercase, 1 digit)</small></label>
+                        <input type="password" id="newPassword" name="new_password" maxlength="128" autocomplete="new-password" required />
+                        <span class="form-error" id="errNewPw"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password *</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" maxlength="128" autocomplete="new-password" required />
+                        <span class="form-error" id="errConfPw"></span>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="pwSubmitBtn">Update Password</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Confirm dialog -->
+<div class="modal-overlay" id="confirmOverlay" style="display:none">
+    <div class="modal-box">
+        <p id="confirmText">Are you sure?</p>
+        <div class="modal-actions">
+            <button class="btn-danger" id="confirmYes">Delete</button>
+            <button class="btn-secondary" id="confirmNo">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/auth-common.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

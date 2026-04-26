@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaMart — Modern Shopping</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="header-inner">
+        <a href="index.html" class="logo">Nova<span>Mart</span></a>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown">
+                    <a href="#">Categories</a>
+                    <ul class="dropdown" id="navCatDropdown">
+                        <li><a href="#">Loading…</a></li>
+                    </ul>
+                </li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-right-group">
+            <div id="userNavArea" style="display:flex;align-items:center;gap:8px"></div>
+            <button class="cart-trigger" id="cartTrigger" aria-label="Shopping Cart">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+    </div>
+</header>
+
+<!-- ===== SHOPPING LIST (CART PANEL) ===== -->
+<aside class="cart-panel" id="cartPanel">
+    <div class="cart-panel-header">
+        <h2>Shopping List</h2>
+        <button class="cart-close" id="cartClose" type="button">&times;</button>
+    </div>
+    <!-- Phase 5: cart wrapped in <form> to enable secure checkout submission -->
+    <form id="checkoutForm" class="cart-form" action="/api/checkout/create-order" method="post" novalidate>
+        <input type="hidden" name="_csrf" id="checkoutCsrf" />
+        <ul class="cart-items" id="cartItems"></ul>
+        <div class="cart-footer">
+            <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+            <p class="cart-msg" id="cartMsg" role="alert"></p>
+            <button type="submit" class="checkout-btn" id="checkoutBtn">Checkout with PayPal</button>
+        </div>
+    </form>
+</aside>
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- ===== BREADCRUMB ===== -->
+<section class="breadcrumb-section">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+            <li class="active"><a href="index.html">Home</a></li>
+        </ol>
+    </nav>
+</section>
+
+<!-- ===== TESTING ACCOUNTS BANNER (Phase 5 requirement) ===== -->
+<aside class="test-accounts-banner" id="testAccountsBanner" style="display:none">
+    <strong>Demo / testing account:</strong>
+    <span id="testAccountsList"></span>
+    <span id="paypalModeNote"></span>
+</aside>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Curated for You</h1>
+        <p>Discover the finest selection of products, handpicked for modern living.</p>
+    </div>
+</section>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="categories-section">
+    <h2 class="section-title">Shop by Category</h2>
+    <div class="category-grid" id="categoryGrid">
+        <div class="category-card-skeleton"></div>
+        <div class="category-card-skeleton"></div>
+        <div class="category-card-skeleton"></div>
+    </div>
+</section>
+
+<!-- ===== FEATURED PRODUCTS ===== -->
+<section class="products-section">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="product-grid" id="productGrid">
+        <!-- Populated from backend API -->
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <a href="index.html" class="logo">Nova<span>Mart</span></a>
+            <p>Modern commerce, refined experience.</p>
+        </div>
+        <nav class="footer-nav">
+            <h4>Shop</h4>
+            <ul id="footerCatList">
+                <li><a href="#">Loading…</a></li>
+            </ul>
+        </nav>
+        <nav class="footer-nav">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 NovaMart. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="js/auth-common.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/products.js"></script>
+</body>
+</html>

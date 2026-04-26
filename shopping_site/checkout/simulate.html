@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaMart — Simulated PayPal Sandbox</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <a href="/index.html" class="logo">Nova<span>Mart</span></a>
+    </div>
+</header>
+
+<main class="checkout-card">
+    <h1>Simulated PayPal Sandbox</h1>
+    <p>
+        No real PayPal credentials are configured, so the checkout flow is being
+        simulated locally. The simulation still exercises every Phase&nbsp;5 step:
+        order creation, digest H(order, salt) generation, capture, idempotent
+        webhook processing, and digest validation.
+    </p>
+    <ul class="simulate-list" id="simInfo">
+        <li>Loading order details…</li>
+    </ul>
+
+    <div class="btn-row">
+        <button id="payBtn" class="btn-primary" type="button">Pay now (simulate)</button>
+        <button id="cancelBtn" class="btn-secondary" type="button" style="background:transparent;border:1px solid var(--clr-border);padding:12px 28px;border-radius:var(--radius);">Cancel</button>
+    </div>
+    <p id="simMsg" class="cart-msg" style="color:var(--clr-text-muted);margin-top:18px"></p>
+</main>
+
+<script src="/js/checkout-simulate.js"></script>
+</body>
+</html>
