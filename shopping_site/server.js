@@ -18,6 +18,10 @@ const paypal   = require('./paypal');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Behind nginx / load balancer: honour X-Forwarded-Proto so req.protocol
+// reports 'https' when the browser hit https://… (one hop).
+app.set('trust proxy', 1);
+
 // Use secure cookies when running over HTTPS (production)
 const IS_SECURE = process.env.NODE_ENV === 'production' || process.env.HTTPS === '1';
 
